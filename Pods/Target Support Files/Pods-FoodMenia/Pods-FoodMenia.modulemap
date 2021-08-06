@@ -1,0 +1,6 @@
+framework module Pods_FoodMenia {
+  umbrella header "Pods-FoodMenia-umbrella.h"
+
+  export *
+  module * { export * }
+}

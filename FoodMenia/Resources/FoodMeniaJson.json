@@ -1,0 +1,124 @@
+
+{
+    "homeDecore":
+    [
+        {
+            "imageName":""
+        },
+        {
+            "imageName":""
+        },
+        {
+            "imageName":""
+        }
+    ],
+    "categoryName" : "foods",
+    "foods" : [
+        {
+            "name":"Pizza",
+            "data":
+            [
+                {
+                    "itemName":"Pizza",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"pizza0"
+                },
+                {
+                    "itemName":"Pizza",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"pizza1"
+                },
+                {
+                    "itemName":"Pizza",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"pizza2"
+                },
+                {
+                    "itemName":"Pizza",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"pizza3"
+                },
+                {
+                    "itemName":"Pizza",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"pizza4"
+                }
+            ]
+        },{
+            "name":"Sushi",
+            "data":
+            [
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"sushi0"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"sushi0"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"sushi0"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"sushi0"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"sushi0"
+                }
+            ]
+        },{
+            "name":"Drinks",
+            "data":
+            [
+                {
+                    "itemName":"drink",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"drinks0"
+                },
+                {
+                    "itemName":"drink",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"drinks1"
+                },
+                {
+                    "itemName":"drink",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"drinks2"
+                },
+                {
+                    "itemName":"drink",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"drinks3"
+                },
+                {
+                    "itemName":"drink",
+                    "itemDetail":"Testing text",
+                    "itemPrice": "$4.99",
+                    "itemImage":"drinks4"
+                }
+            ]
+        }
+    ]
+}
