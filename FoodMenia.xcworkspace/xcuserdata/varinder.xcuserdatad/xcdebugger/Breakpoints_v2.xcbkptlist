@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "D7B91BDF-91A6-4A89-A29A-2DA34A1DCA75"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B53C1A05-A069-49F3-B164-846F87B214E1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodMenia/Modules/Home Module/View/Vc/HomeViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
+            landmarkName = "cellDidSelectFoodItem(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B53C1A05-A069-49F3-B164-846F87B214E1 - 907e8bbf20ac2d6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FoodMenia.HomeViewController.cellDidSelectFoodItem(FoodMenia.FoodItem) -&gt; ()"
+                  moduleName = "FoodMenia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/varinder/DinnDinAssignment/FoodMenia/Modules/Home%20Module/View/Vc/HomeViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "291"
+                  endingLineNumber = "291"
+                  offsetFromSymbolStart = "262">
+               </Location>
+               <Location
+                  uuid = "B53C1A05-A069-49F3-B164-846F87B214E1 - 8cf7a0bd41dff1f1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (FoodMenia.FoodItem) -&gt; Swift.Bool in FoodMenia.HomeViewController.cellDidSelectFoodItem(FoodMenia.FoodItem) -&gt; ()"
+                  moduleName = "FoodMenia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/varinder/DinnDinAssignment/FoodMenia/Modules/Home%20Module/View/Vc/HomeViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "291"
+                  endingLineNumber = "291"
+                  offsetFromSymbolStart = "35">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
