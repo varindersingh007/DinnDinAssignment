@@ -21,16 +21,11 @@ class DaySaleCell: UICollectionViewCell,Reusable {
         // Initialization code
     }
     
+    /// set up all the ui element with the size
+    /// - Parameter size: canvas height/width for cell
     func updateUI(_ size: CGSize) {
-        print(size)
         imageHeightConstarint.constant = size.height
         imageWidthConstraint.constant = size.width
         self.layoutIfNeeded()
-      /*  saleImageView.snp.makeConstraints() { updator in
-            updator.width.equalTo(size.width)
-            updator.height.equalTo(size.height)
-            updator.centerY.equalToSuperview()
-            updator.centerX.equalToSuperview()
-        }*/
     }
 }

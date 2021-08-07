@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0A36394626BE463F00756274 /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394526BE463F00756274 /* ItemsViewController.swift */; };
 		0A36394926BE729800756274 /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394826BE729800756274 /* Array+Ext.swift */; };
-		0A36394B26BE76E700756274 /* HomePrsenter+ViewOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394A26BE76E700756274 /* HomePrsenter+ViewOrders.swift */; };
 		0A36394E26BE896000756274 /* OrderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394C26BE896000756274 /* OrderViewCell.swift */; };
 		0A36394F26BE896000756274 /* OrderViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A36394D26BE896000756274 /* OrderViewCell.xib */; };
 		0A36395126BE8F8100756274 /* UIAlertController_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36395026BE8F8000756274 /* UIAlertController_Ext.swift */; };
@@ -51,7 +50,6 @@
 /* Begin PBXFileReference section */
 		0A36394526BE463F00756274 /* ItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewController.swift; sourceTree = "<group>"; };
 		0A36394826BE729800756274 /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
-		0A36394A26BE76E700756274 /* HomePrsenter+ViewOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomePrsenter+ViewOrders.swift"; sourceTree = "<group>"; };
 		0A36394C26BE896000756274 /* OrderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewCell.swift; sourceTree = "<group>"; };
 		0A36394D26BE896000756274 /* OrderViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderViewCell.xib; sourceTree = "<group>"; };
 		0A36395026BE8F8000756274 /* UIAlertController_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertController_Ext.swift; sourceTree = "<group>"; };
@@ -260,7 +258,6 @@
 			isa = PBXGroup;
 			children = (
 				0A9E7A3E26BCDCF300A80D16 /* HomeViewProtocol.swift */,
-				0A36394A26BE76E700756274 /* HomePrsenter+ViewOrders.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -463,7 +460,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A9E7A6A26BD6AC000A80D16 /* BehaviourRelay+ext.swift in Sources */,
-				0A36394B26BE76E700756274 /* HomePrsenter+ViewOrders.swift in Sources */,
 				0A9E7A3826BCD83D00A80D16 /* HomeInterator.swift in Sources */,
 				0A9E7A4126BCDD5600A80D16 /* DaySales.swift in Sources */,
 				0A9E7A5526BCFADF00A80D16 /* FoodBaseModel.swift in Sources */,

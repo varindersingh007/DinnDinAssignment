@@ -13,7 +13,7 @@ import RxDataSources
 
 //Create a data type which is the element for a cell
 struct CustomElementType {
-var text: String
+    var text: String
 }
 
 //Create a type conform SectionModelType which is the element for a section

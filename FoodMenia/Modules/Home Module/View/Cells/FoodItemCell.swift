@@ -45,6 +45,9 @@ class FoodItemCell: UICollectionViewCell, Reusable {
         itemAddButton.roundCorner(itemAddButton.frame.height / 2)
     }
 
+    
+    /// configure the cell
+    /// - Parameter foodItem: this is the `foodItem` model which 
     func configureCell(_ foodItem: FoodItem) {
         if let imageName = foodItem.itemImage {
             itemThumView.image = UIImage(named: imageName)
@@ -67,6 +70,8 @@ class FoodItemCell: UICollectionViewCell, Reusable {
         disposeBag = DisposeBag()
     }
     
+    /// animate the `addItemButton`
+    /// let the user now about the item added to the card
     private func animateAddItem() {
         let previousTitle = itemAddButton.titleLabel?.text
         self.itemAddButton.isUserInteractionEnabled = false
@@ -85,5 +90,4 @@ class FoodItemCell: UICollectionViewCell, Reusable {
             }
         }
     }
-
 }

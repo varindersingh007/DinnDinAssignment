@@ -32,6 +32,11 @@ class OrderViewCell: UITableViewCell,Reusable {
         super.setSelected(selected, animated: animated)
     }
     
+    
+    /// configure the order view cell
+    /// - Parameter foodItem: to configure the ui we need `foodItem`
+    /// this will fetch all the details and dislay in the cell
+    /// --
     func configureCell(_ foodItem: FoodItem) {
         self.itemNameLbl.text = foodItem.itemName
         self.itemPriceLbl.text = "\(foodItem.itemPrice ?? 0) usd"
