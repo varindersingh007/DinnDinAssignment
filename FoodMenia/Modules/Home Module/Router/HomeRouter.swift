@@ -28,4 +28,9 @@ class HomeRouter {
         router.entry = view as? EntryPoint
         return router
     }
+    
+    func viewOrders(_ presenter: HomePresenter) {
+        
+    }
+    
 }

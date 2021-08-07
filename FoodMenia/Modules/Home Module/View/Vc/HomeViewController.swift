@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 /// A channels view controller.
 class HomeViewController: UIViewController, HomeViewProtocol {
@@ -15,15 +16,32 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     /// this will handle all the presenter calls
     var presenter: HomePresenterProtocol?
     
+    /*let dataSource = RxCollectionViewSectionedAnimatedDataSource<AnimatableSectionModel<String, FoodItem>>(
+      configureCell: { (_, collectionView, indexPath, item: FoodItem) in
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoodItemCell.reuseIdentifier, for: indexPath) as! FoodItemCell
+        cell.configureCell(item)
+        return cell
+      },
+        configureSupplementaryView: { _, _, _, _ in UICollectionReusableView(frame: CGRect(x: 0, y: 0, width: Utils.shared.screenWidth, height: 200)) }
+    )*/
+
+    
     public var bag = DisposeBag()
     
-    private(set) var daySales = BehaviorRelay<[DaySales]>(value: [])
-    private(set) var pizzaItems = BehaviorRelay<[FoodItem]>(value: [])
-    private(set) var sushiItems = BehaviorRelay<[FoodItem]>(value: [])
-    private(set) var drinksItems = BehaviorRelay<[FoodItem]>(value: [])
+//    private(set) var daySales = BehaviorRelay<[DaySales]>(value: [])
+//    private(set) var pizzaItems = BehaviorRelay<[FoodItem]>(value: [])
+//    private(set) var sushiItems = BehaviorRelay<[FoodItem]>(value: [])
+//    private(set) var drinksItems = BehaviorRelay<[FoodItem]>(value: [])
     
-    /// this will helps to store selected items
-    private(set) var selectedItems = BehaviorRelay<[FoodItem]>(value: [])
+    private(set) var daySales = BehaviorRelay<[DaySales]>(value: [])
+    private(set) var pizzaItems = [FoodItem]()
+    private(set) var sushiItems = [FoodItem]()
+    private(set) var drinksItems = [FoodItem]()
+    
+    
+    private(set) var pizzaSection = BehaviorRelay<[Section]>(value: [])
+    private(set) var sushiSection = BehaviorRelay<[Section]>(value: [])
+    private(set) var drinksSection = BehaviorRelay<[Section]>(value: [])
 
 
     @IBOutlet weak var daySaleCollectionView: UICollectionView!
@@ -36,12 +54,22 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     @IBOutlet weak var cartButton: UIButton!
     @IBOutlet weak var cartItemCountBackView: UIView!
     @IBOutlet weak var cartItemCounter: UILabel!
+    @IBOutlet weak var pageController: UIPageControl!
     
+    var foodListDisplayIndex = 0
+        
     var initialTop: CGFloat! {
         (Utils.shared.screenHeight * 0.75) - 70
     }
     
     var isMovingTop = false
+    
+    typealias Section = AnimatableSectionModel<String, FoodItem>
+    private var dataSource = RxCollectionViewSectionedAnimatedDataSource<Section>( configureCell: { (_,_,_,_) in
+        fatalError()
+    },configureSupplementaryView: { (_,_,_,_) in
+      fatalError()
+    })
     
     var canPerformGesture: Bool! {
         !pizzaCollectionView.isUserInteractionEnabled || !sushiCollectionView.isUserInteractionEnabled || !drinksCollectionView.isUserInteractionEnabled
@@ -58,6 +86,7 @@ class HomeViewController: UIViewController, HomeViewProtocol {
         self.view.layoutIfNeeded()
         bindSelectedItems()
         self.presenter?.startFetchingData()
+        bindPageControl()
     }
     
     override func viewDidLayoutSubviews() {
@@ -70,6 +99,8 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        print("inital content off set ==> ",pizzaCollectionView.contentOffset)
     }
     // --------  END -------- //
     
@@ -94,8 +125,9 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     }
     
     func bindSelectedItems() {
-        selectedItems.asObservable().subscribe(onNext: { [weak self] item in
-            if let count = self?.selectedItems.value.count {
+        presenter?.selectedItems = BehaviorRelay<[FoodItem]>(value: [])
+        presenter?.selectedItems?.asObservable().subscribe(onNext: { [weak self] item in
+            if let count = self?.presenter?.selectedItems?.value.count {
                 self?.cartItemCountBackView.isHidden = count == 0
                 self?.cartItemCounter.text = "\(count)"
                 self?.cartItemCountBackView.dumpingAnimation(from: 1, to: 1.02)
@@ -103,22 +135,69 @@ class HomeViewController: UIViewController, HomeViewProtocol {
         }).disposed(by: bag)
     }
     
-    private func bindFoodsCollectionView() {
-        // 0. pizza collection view
-        bindCollectionView(pizzaCollectionView, pizzaItems)
-        bindCollectionView(sushiCollectionView, sushiItems)
-        bindCollectionView(drinksCollectionView, drinksItems)
+    private func bindPageControl() {
+        daySaleCollectionView.rx.didScroll
+            .withLatestFrom(daySaleCollectionView.rx.contentOffset)
+            .map { Int(round($0.x / self.daySaleCollectionView.frame.width)) }
+            .bind(to: self.pageController.rx.currentPage)
+            .disposed(by: bag)
     }
     
-    func bindCollectionView(_ collectionView: UICollectionView, _ items: BehaviorRelay<[FoodItem]>) {
+    private func bindFoodsCollectionView() {
+        // 0. pizza collection view
+        bindCollectionView(pizzaCollectionView, pizzaItems,pizzaSection)
+        bindCollectionView(sushiCollectionView, sushiItems,sushiSection)
+        bindCollectionView(drinksCollectionView, drinksItems,drinksSection)
+    }
+    
+    func collectionViewDataSourceUI() -> (
+            CollectionViewSectionedDataSource<Section>.ConfigureCell,
+            CollectionViewSectionedDataSource<Section>.ConfigureSupplementaryView
+        ) {
+        return (
+             { _, cv, ip, i in
+                let cell = cv.dequeueReusableCell(withReuseIdentifier: FoodItemCell.reuseIdentifier, for: ip) as! FoodItemCell
+                cell.configureCell(i)
+                cell.delegate = self
+                return cell
+            },
+             { ds ,cv, kind, ip in
+                print("ip for secion",ip)
+                if kind == UICollectionView.elementKindSectionHeader {
+                let section = cv.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FoodHeaderView.reuseIdentifier, for: ip) as! FoodHeaderView
+                    section.configureHeader(cv.tag)
+                return section
+                } else {
+                    return UICollectionReusableView()
+                }
+            }
+        )
+    }
+    
+    func bindCollectionView(_ collectionView: UICollectionView, _ items: [FoodItem],_ section: BehaviorRelay<[Section]>) {
+        
         collectionView.register(UINib(nibName: "FoodItemCell", bundle: nil), forCellWithReuseIdentifier: FoodItemCell.reuseIdentifier)
-        items.bind(to: collectionView.rx.items(cellIdentifier: FoodItemCell.reuseIdentifier, cellType: FoodItemCell.self)) { (row, model , cell) in
-            cell.configureCell(model)
-            cell.delegate = self
-        }.disposed(by: bag)
-        collectionView
-            .rx.delegate
-            .setForwardToDelegate(self, retainDelegate: false)
+        collectionView.register(UINib(nibName: "FoodHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: FoodHeaderView.reuseIdentifier)
+        
+        let (configureCollectionViewCell, configureSupplementaryView) =  self.collectionViewDataSourceUI()
+        let cvAnimatedDataSource = RxCollectionViewSectionedAnimatedDataSource(
+            configureCell: configureCollectionViewCell,
+            configureSupplementaryView: configureSupplementaryView
+        )
+
+        section
+            .bind(to: collectionView.rx.items(dataSource: cvAnimatedDataSource))
+            .disposed(by: bag)
+        collectionView.rx.setDelegate(self).disposed(by: bag)
+        
+        Observable.of(
+            collectionView.rx.modelSelected(FoodItem.self)
+        )
+            .merge()
+            .subscribe(onNext: { item in
+                print("Let me guess, it's .... It's \(item), isn't it? Yeah, I've got it.")
+            })
+            .disposed(by: bag)
     }
     
     ///
@@ -137,7 +216,9 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     ///
     func updatePizzaItems(_ pizzas: [FoodItem]) {
         DispatchQueue.main.async {
-            self.pizzaItems.accept(pizzas)
+            self.pizzaItems = pizzas
+            let secion2 = Section(model: "Pizza", items: pizzas)
+            self.pizzaSection.append(secion2)
         }
     }
     
@@ -147,7 +228,10 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     ///
     func updateSushiItems(_ sushis: [FoodItem]) {
         DispatchQueue.main.async {
-            self.sushiItems.accept(sushis)
+            self.sushiItems = sushis
+            let secion2 = Section(model: "Sushi", items: sushis)
+            self.sushiSection.append(secion2)
+
         }
     }
     
@@ -157,7 +241,10 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     ///
     func updateDrinksItems(_ drinks: [FoodItem]) {
         DispatchQueue.main.async {
-            self.drinksItems.accept(drinks)
+            self.drinksItems = drinks
+            let secion2 = Section(model: "Drink", items: drinks)
+            self.drinksSection.append(secion2)
+
         }
     }
     
@@ -223,7 +310,7 @@ extension HomeViewController {
     }
     
     func handleFoodSwiping(_ top: CGFloat) {
-        if !canPerformGesture { return }
+        //if !canPerformGesture { return }
         if top > 0 {
             print("Moving bottom")
             isMovingTop = false
@@ -264,31 +351,61 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * 1.2)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * 0.32)
+    }
 }
 
 //MARK:- UIScrollViewDelegate
 extension HomeViewController : UIScrollViewDelegate {
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        foodListDisplayIndex = Int(scrollView.contentOffset.x / Utils.shared.screenWidth)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView == pizzaCollectionView ||
+        
+        if  scrollView == mainScrollView {
+            let newIndex = Int(scrollView.contentOffset.x / Utils.shared.screenWidth)
+            if newIndex != foodListDisplayIndex {
+             // new index here
+                foodListDisplayIndex = newIndex
+            }
+        }
+        
+        /*  if scrollView == pizzaCollectionView ||
             scrollView == sushiCollectionView ||
             scrollView == drinksCollectionView {
             let yPos = scrollView.contentOffset.y
             print("content off set",yPos)
-            if yPos < -45 {
-                print("going down")
+           if yPos < -47 {
+                foodListTopConstraint.constant = initialTop
+                scrollView.setContentOffset(.zero, animated: false)
+                mainScrollView.isUserInteractionEnabled = false
                 enableCollectionScrolling(false)
-            } else {
-                print("Going top")
-                enableCollectionScrolling(true)
-            }
-        }
+                UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                }
+            }*/
+//        }
     }
 }
 
 //MARK:- FoodItemCellDelegate
 extension HomeViewController: FoodItemCellDelegate {
     func cellDidSelectFoodItem(_ foodItem: FoodItem) {
-            selectedItems.append(foodItem)
-        
+        presenter?.selectedItems?.append(foodItem)
     }
 }
+/*
+extension HomeViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if pizzaCollectionView.contentOffset.y < -45 {
+            enableCollectionScrolling(false)
+            enableCollectionScrolling(false)
+            return false
+        }
+        return true
+    }
+}*/

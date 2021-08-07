@@ -6,7 +6,8 @@
 //
 
 import UIKit
-
+import RxSwift
+import RxCocoa
 
 /// initial `App` entry point
 typealias EntryPoint = HomeViewProtocol & UIViewController
@@ -99,6 +100,10 @@ protocol HomePresenterProtocol: AnyObject {
     /// ref to `HomeVc` for updates
     /// this will allow to pass calls directly to view by `presenter`
     var homeView: HomeViewProtocol? { get set }
+    
+    /// this will helps to store selected items
+    /// 
+    var selectedItems : BehaviorRelay<[FoodItem]>? { get set }
     
     ///
     /// this will pass the response to view , when ever `interactor` finishes the fetchind data

@@ -7,14 +7,20 @@
 
 import Foundation
 import ObjectMapper
-struct FoodItem : Mappable,Equatable {
+import RxDataSources
+struct FoodItem : Mappable,IdentifiableType,Equatable {
+    
+    var identity: String {
+        return itemImage!
+    }
+    
     var itemName   : String?
     var itemDetail : String?
     var itemPrice  : Int?
     var itemImage  : String?
     var itemWeight : String?
     var isVeg: Bool?
-
+    
     enum CodingKeys: String, CodingKey {
         case itemName = "itemName"
         case itemDetail = "itemDetail"
@@ -23,7 +29,7 @@ struct FoodItem : Mappable,Equatable {
         case itemWeight = "itemWeight"
         case isVege = "isVeg"
     }
-
+    
     init?(map: Map) {
         itemName <- map[CodingKeys.itemName.rawValue]
         itemDetail <- map[CodingKeys.itemDetail.rawValue]

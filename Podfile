@@ -11,5 +11,6 @@ pod 'ObjectMapper'
 pod 'RxSwift'
 pod 'RxCocoa'
 pod 'SnapKit'
+pod 'RxDataSources' 
 
 end

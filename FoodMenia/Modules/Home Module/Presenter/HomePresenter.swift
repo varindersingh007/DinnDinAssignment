@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import RxCocoa
 
 class HomePresenter: HomePresenterProtocol {
+    
+    
+    var selectedItems: BehaviorRelay<[FoodItem]>?
+    
     /// reference to `router`in `presenter`
     /// this will helps to navigate to other `views`
     var router: HomeRouter?

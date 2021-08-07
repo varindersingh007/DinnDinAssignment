@@ -27,6 +27,11 @@ extension UIView {
         self.layer.masksToBounds = true
     }
     
+    func setBorder(width: CGFloat, color: UIColor) {
+        self.layer.borderWidth = width
+        self.layer.borderColor = color.cgColor
+    }
+    
     func dumpingAnimation(from: CGFloat, to: CGFloat){
         let spring = CASpringAnimation(keyPath: "transform.scale")
         spring.damping = 1
