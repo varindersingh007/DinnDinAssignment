@@ -12,38 +12,8 @@ import RxDataSources
 
 /// A channels view controller.
 class HomeViewController: UIViewController, HomeViewProtocol {
-    /// `presenter` `ref` in home view
-    /// this will handle all the presenter calls
-    var presenter: HomePresenterProtocol?
     
-    /*let dataSource = RxCollectionViewSectionedAnimatedDataSource<AnimatableSectionModel<String, FoodItem>>(
-      configureCell: { (_, collectionView, indexPath, item: FoodItem) in
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoodItemCell.reuseIdentifier, for: indexPath) as! FoodItemCell
-        cell.configureCell(item)
-        return cell
-      },
-        configureSupplementaryView: { _, _, _, _ in UICollectionReusableView(frame: CGRect(x: 0, y: 0, width: Utils.shared.screenWidth, height: 200)) }
-    )*/
-
-    
-    public var bag = DisposeBag()
-    
-//    private(set) var daySales = BehaviorRelay<[DaySales]>(value: [])
-//    private(set) var pizzaItems = BehaviorRelay<[FoodItem]>(value: [])
-//    private(set) var sushiItems = BehaviorRelay<[FoodItem]>(value: [])
-//    private(set) var drinksItems = BehaviorRelay<[FoodItem]>(value: [])
-    
-    private(set) var daySales = BehaviorRelay<[DaySales]>(value: [])
-    private(set) var pizzaItems = [FoodItem]()
-    private(set) var sushiItems = [FoodItem]()
-    private(set) var drinksItems = [FoodItem]()
-    
-    
-    private(set) var pizzaSection = BehaviorRelay<[Section]>(value: [])
-    private(set) var sushiSection = BehaviorRelay<[Section]>(value: [])
-    private(set) var drinksSection = BehaviorRelay<[Section]>(value: [])
-
-
+    // outlets
     @IBOutlet weak var daySaleCollectionView: UICollectionView!
     @IBOutlet weak var foodListBackView: UIView!
     @IBOutlet weak var foodListTopConstraint: NSLayoutConstraint!
@@ -55,22 +25,44 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     @IBOutlet weak var cartItemCountBackView: UIView!
     @IBOutlet weak var cartItemCounter: UILabel!
     @IBOutlet weak var pageController: UIPageControl!
+    @IBOutlet weak var cartBackView: UIView!
     
-    var foodListDisplayIndex = 0
+    /// `presenter` `ref` in home view
+    /// this will handle all the presenter calls
+    var presenter: HomePresenterProtocol?
+    
+    /// dispose bag for releasing the memorny
+    public var bag = DisposeBag()
+    
+    /// will store `daySales` data for top collection view data source
+    private(set) var daySales = BehaviorRelay<[DaySales]>(value: [])
+    
+    /// this will store `foodItems` for `pizza` collection list view
+    private(set) var pizzaItems = [FoodItem]()
+    
+    /// this will store `foodItems` for `pizza` collection list view
+    private(set) var sushiItems = [FoodItem]()
+    
+    /// this will store `foodItems` for `pizza` collection list view
+    private(set) var drinksItems = [FoodItem]()
+    
+    /// header section for `pizza`
+    private(set) var pizzaSection = BehaviorRelay<[Section]>(value: [])
+    
+    /// header section for `sushi`
+    private(set) var sushiSection = BehaviorRelay<[Section]>(value: [])
+    
+    /// header section for `pizza`
+    private(set) var drinksSection = BehaviorRelay<[Section]>(value: [])
         
-    var initialTop: CGFloat! {
-        (Utils.shared.screenHeight * 0.75) - 70
-    }
+    /// this will define the starting top constriant for `swipeView`
+    var initialTop: CGFloat! { (Utils.shared.screenHeight * 0.75) - 70 }
     
-    var isMovingTop = false
-    
-    typealias Section = AnimatableSectionModel<String, FoodItem>
-    private var dataSource = RxCollectionViewSectionedAnimatedDataSource<Section>( configureCell: { (_,_,_,_) in
-        fatalError()
-    },configureSupplementaryView: { (_,_,_,_) in
-      fatalError()
-    })
-    
+    /// swiping direction for the gestures
+    private(set) var isMovingTop = false
+        
+    /// to check gesture need to work or not
+    /// if all the collections don't have user interaction then this will be true
     var canPerformGesture: Bool! {
         !pizzaCollectionView.isUserInteractionEnabled || !sushiCollectionView.isUserInteractionEnabled || !drinksCollectionView.isUserInteractionEnabled
     }
@@ -80,13 +72,10 @@ class HomeViewController: UIViewController, HomeViewProtocol {
         super.viewDidLoad()
         // add gesture
         addGestures()
-        bindDaysCollectionView()
-        bindFoodsCollectionView()
         foodListTopConstraint.constant = initialTop
-        self.view.layoutIfNeeded()
-        bindSelectedItems()
-        self.presenter?.startFetchingData()
-        bindPageControl()
+        view.layoutIfNeeded()
+        bindingTogether()
+        presenter?.startFetchingData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -104,6 +93,26 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     }
     // --------  END -------- //
     
+    
+    /// user can check the selected items by pressing
+    /// - Parameter sender: button pressed by user
+    @IBAction func cartAction(_ sender: UIButton) {
+        if let presenter = self.presenter {
+            self.presenter?.router?.viewOrders(presenter)
+        }
+    }
+    
+    /// helps to bind all togenter
+    /// here we are binding all `collection` with data
+    /// `daySales` , and other `fooditems` to the collection views
+    private func bindingTogether() {
+        bindDaysCollectionView()
+        bindFoodsCollectionView()
+        bindSelectedItems()
+        bindPageControl()
+    }
+    
+    
     /// helps to bind the `daysColletion` to items
     /// reactive Swift will helps to make changes , whenever`daySale` will be changed
     /// here we will set the data to our days collection
@@ -116,18 +125,24 @@ class HomeViewController: UIViewController, HomeViewProtocol {
     }
     
     /// will add `pan` gesture to `food` list view
+    /// this will handle move `foodList` bottom to top and vice versa
     private func addGestures() {
-        let panGesture = UIPanGestureRecognizer()//(target: self, action: #selector(self.handleFoodListSwiping(_:)))
+        let panGesture = UIPanGestureRecognizer()
         self.foodListBackView.addGestureRecognizer(panGesture)
         panGesture.rx.event.bind { [weak self] panGesture in
             self?.handleFoodListSwiping(panGesture)
         }.disposed(by: bag)
     }
     
+    
+    /// binding selected items
+    /// this will `notify` whenever the item added to `cart`
+    /// we need to update the item count and show the `cart` button as well
     func bindSelectedItems() {
         presenter?.selectedItems = BehaviorRelay<[FoodItem]>(value: [])
         presenter?.selectedItems?.asObservable().subscribe(onNext: { [weak self] item in
             if let count = self?.presenter?.selectedItems?.value.count {
+                self?.cartBackView.isHidden = count == 0
                 self?.cartItemCountBackView.isHidden = count == 0
                 self?.cartItemCounter.text = "\(count)"
                 self?.cartItemCountBackView.dumpingAnimation(from: 1, to: 1.02)
@@ -135,6 +150,8 @@ class HomeViewController: UIViewController, HomeViewProtocol {
         }).disposed(by: bag)
     }
     
+    /// will bind the page controller to the top `daySale` collcetion view
+    /// when ever `collection` will change the page it will update the `pageController`
     private func bindPageControl() {
         daySaleCollectionView.rx.didScroll
             .withLatestFrom(daySaleCollectionView.rx.contentOffset)
@@ -143,6 +160,8 @@ class HomeViewController: UIViewController, HomeViewProtocol {
             .disposed(by: bag)
     }
     
+    /// this will bind all the collections with the all the food items
+    /// common func for all the collections
     private func bindFoodsCollectionView() {
         // 0. pizza collection view
         bindCollectionView(pizzaCollectionView, pizzaItems,pizzaSection)
@@ -150,7 +169,10 @@ class HomeViewController: UIViewController, HomeViewProtocol {
         bindCollectionView(drinksCollectionView, drinksItems,drinksSection)
     }
     
-    func collectionViewDataSourceUI() -> (
+    
+    /// this eill create the collection ui by including `FoodItemCell` and for the header `FoodHeaderView`
+    /// - Returns: this will reture tuple `configuration` for cell and header ui
+    private func collectionViewDataSourceUI() -> (
             CollectionViewSectionedDataSource<Section>.ConfigureCell,
             CollectionViewSectionedDataSource<Section>.ConfigureSupplementaryView
         ) {
@@ -166,6 +188,7 @@ class HomeViewController: UIViewController, HomeViewProtocol {
                 if kind == UICollectionView.elementKindSectionHeader {
                 let section = cv.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FoodHeaderView.reuseIdentifier, for: ip) as! FoodHeaderView
                     section.configureHeader(cv.tag)
+                    section.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.handleFoodListSwiping(_:))))
                 return section
                 } else {
                     return UICollectionReusableView()
@@ -174,22 +197,24 @@ class HomeViewController: UIViewController, HomeViewProtocol {
         )
     }
     
+    
+    /// moduration func will allows to perfom for `FoodItem` listing ui
+    /// - Parameters:
+    ///   - collectionView: this will be the collectionView on which are going to bind the `dataSource` elements
+    ///   - items: this is the array of `FoodItems` which are need to display
+    ///   - section: collection `header` , alernative type of `AnimatableSectionModel`
     func bindCollectionView(_ collectionView: UICollectionView, _ items: [FoodItem],_ section: BehaviorRelay<[Section]>) {
-        
         collectionView.register(UINib(nibName: "FoodItemCell", bundle: nil), forCellWithReuseIdentifier: FoodItemCell.reuseIdentifier)
         collectionView.register(UINib(nibName: "FoodHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: FoodHeaderView.reuseIdentifier)
-        
         let (configureCollectionViewCell, configureSupplementaryView) =  self.collectionViewDataSourceUI()
         let cvAnimatedDataSource = RxCollectionViewSectionedAnimatedDataSource(
             configureCell: configureCollectionViewCell,
             configureSupplementaryView: configureSupplementaryView
         )
 
-        section
-            .bind(to: collectionView.rx.items(dataSource: cvAnimatedDataSource))
+        section .bind(to: collectionView.rx.items(dataSource: cvAnimatedDataSource))
             .disposed(by: bag)
         collectionView.rx.setDelegate(self).disposed(by: bag)
-        
         Observable.of(
             collectionView.rx.modelSelected(FoodItem.self)
         )
@@ -248,19 +273,36 @@ class HomeViewController: UIViewController, HomeViewProtocol {
         }
     }
     
+    /// on order list vc user can remove the selected items
+    /// - Parameters:
+    ///   - foodItem: specific item which need to remove from the list
+    ///   - vc: this is the `ItemsViewController` where use can reomve the order
+    ///    /// this will helps to remove item from the `selectedItems`
+    func didRemoveITem( foodItem: FoodItem, vc: ItemsViewController) {
+        guard self.presenter?.selectedItems != nil else {
+            return
+        }
+        if let firstIndex = self.presenter?.selectedItems!.value.firstIndex(where: {$0.itemImage == foodItem.itemImage}) {
+            self.presenter?.selectedItems?.remove(at: firstIndex)
+        }
+    }
+    
     ///
     /// view protocol will notify the view about coming errors
     /// - Parameter error: is a custom `webError`, including error `details`
     /// - statusCode: to check the specific reason for the error
     /// - message: specific `message` for the `error`
     func showError(_ error: WebError) {
-        
+        // this will fire an error for the api or other stuff
     }
 }
 
 //MARK:- food list swipe handling
 extension HomeViewController {
-     func handleFoodListSwiping(_ gesture: UIPanGestureRecognizer) {
+    
+    /// pan gesture for swiping food list
+    /// - Parameter gesture: available gesture type which will be `panGesture`
+    @objc func handleFoodListSwiping(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: foodListBackView)
         // handle the gesture state
         switch gesture.state {
@@ -298,7 +340,6 @@ extension HomeViewController {
            break
         case .cancelled:
             print("pan gesture cancelled")
-            
             break
         case .failed:
             print("pan gesture failed")
@@ -309,6 +350,10 @@ extension HomeViewController {
         gesture.setTranslation(CGPoint.zero, in: foodListBackView)
     }
     
+    
+    /// handle swipng
+    /// - Parameter top: top is a margin generated by gesture
+    /// type will be `translation.y` from the `gesture`
     func handleFoodSwiping(_ top: CGFloat) {
         //if !canPerformGesture { return }
         if top > 0 {
@@ -320,7 +365,6 @@ extension HomeViewController {
         }
         let newTop = foodListTopConstraint.constant + top
         print("leading translation for swipe ==> ",newTop)
-        
         if Utils.shared.hasNotch && newTop <= 1 {
             enableCollectionScrolling(true)
             mainScrollView.isUserInteractionEnabled = true
@@ -333,13 +377,18 @@ extension HomeViewController {
         foodListTopConstraint.constant =  newTop
     }
     
-    func calculateAlpha() {
+    /// user for alpha to the top collectin vew
+    /// with the gesture we will setup alpha for back collectionView
+    private func calculateAlpha() {
         let top = foodListTopConstraint.constant
         let percentage = (top*100)/initialTop
         self.daySaleCollectionView.alpha = percentage/100
     }
     
-    func enableCollectionScrolling(_ enable:Bool) {
+    
+    /// enable/ disabe scrolling of three collection views
+    /// - Parameter enable: boolean value to set
+    private func enableCollectionScrolling(_ enable:Bool) {
         pizzaCollectionView.isUserInteractionEnabled = enable
         sushiCollectionView.isUserInteractionEnabled = enable
         drinksCollectionView.isUserInteractionEnabled = enable
@@ -360,19 +409,7 @@ extension HomeViewController : UICollectionViewDelegateFlowLayout {
 //MARK:- UIScrollViewDelegate
 extension HomeViewController : UIScrollViewDelegate {
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        foodListDisplayIndex = Int(scrollView.contentOffset.x / Utils.shared.screenWidth)
-    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        if  scrollView == mainScrollView {
-            let newIndex = Int(scrollView.contentOffset.x / Utils.shared.screenWidth)
-            if newIndex != foodListDisplayIndex {
-             // new index here
-                foodListDisplayIndex = newIndex
-            }
-        }
         
         /*  if scrollView == pizzaCollectionView ||
             scrollView == sushiCollectionView ||
@@ -398,14 +435,3 @@ extension HomeViewController: FoodItemCellDelegate {
         presenter?.selectedItems?.append(foodItem)
     }
 }
-/*
-extension HomeViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if pizzaCollectionView.contentOffset.y < -45 {
-            enableCollectionScrolling(false)
-            enableCollectionScrolling(false)
-            return false
-        }
-        return true
-    }
-}*/

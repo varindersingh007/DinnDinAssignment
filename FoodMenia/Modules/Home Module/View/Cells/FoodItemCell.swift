@@ -57,7 +57,6 @@ class FoodItemCell: UICollectionViewCell, Reusable {
         itemWeightLbl.text = foodItem.itemWeight
         vegSelectionView.isHidden = foodItem.isVeg ?? true
         itemAddButton.rx.tap.subscribe(onNext: { [weak self] in
-            
             self?.animateAddItem()
             self?.delegate?.cellDidSelectFoodItem(foodItem)
         }).disposed(by: disposeBag)
@@ -86,8 +85,5 @@ class FoodItemCell: UICollectionViewCell, Reusable {
             }
         }
     }
-    
-    func reset() {
-        
-    }
+
 }

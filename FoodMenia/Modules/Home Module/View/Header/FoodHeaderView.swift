@@ -33,9 +33,5 @@ class FoodHeaderView: UICollectionReusableView, Reusable {
             lable.textColor = sectionIndex == lable.tag ? .black : .lightGray
         }
     }
-    
-    func reset() {
-        
-    }
-    
+
 }

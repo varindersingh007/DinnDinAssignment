@@ -33,9 +33,4 @@ class DaySaleCell: UICollectionViewCell,Reusable {
             updator.centerX.equalToSuperview()
         }*/
     }
-
-    
-    func reset() {
-        
-    }
 }

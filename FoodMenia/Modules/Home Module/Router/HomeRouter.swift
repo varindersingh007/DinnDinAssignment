@@ -29,8 +29,9 @@ class HomeRouter {
         return router
     }
     
-    func viewOrders(_ presenter: HomePresenter) {
-        
+    func viewOrders(_ presenter: HomePresenterProtocol) {
+        let orderListView = Storyboards.main.instantiateViewController(identifier: Storyboards.Storyboardides.orderListViewID) as! ItemsViewController
+        orderListView.presenter = presenter
+        entry?.present(orderListView, animated: true, completion: nil)
     }
-    
 }

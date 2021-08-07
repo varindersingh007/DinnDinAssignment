@@ -10,7 +10,6 @@ import RxCocoa
 
 class HomePresenter: HomePresenterProtocol {
     
-    
     var selectedItems: BehaviorRelay<[FoodItem]>?
     
     /// reference to `router`in `presenter`
@@ -81,7 +80,14 @@ class HomePresenter: HomePresenterProtocol {
             self.interactor?.fetchDaySales()
             self.interactor?.fetchFoods()
         }
+    }    
+    
+    /// on order list vc user can remove the selected items
+    /// - Parameters:
+    ///   - foodItem: specific item which need to remove from the list
+    ///   - vc: this is the `ItemsViewController` where use can reomve the order
+    ///    /// this will helps to remove item from the `selectedItems`
+    func didRemoveITem( foodItem: FoodItem, vc: ItemsViewController) {
+        self.homeView?.didRemoveITem(foodItem: foodItem, vc: vc)
     }
-    
-    
 }

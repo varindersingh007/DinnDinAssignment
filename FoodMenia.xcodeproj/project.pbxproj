@@ -10,6 +10,9 @@
 		0A36394626BE463F00756274 /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394526BE463F00756274 /* ItemsViewController.swift */; };
 		0A36394926BE729800756274 /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394826BE729800756274 /* Array+Ext.swift */; };
 		0A36394B26BE76E700756274 /* HomePrsenter+ViewOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394A26BE76E700756274 /* HomePrsenter+ViewOrders.swift */; };
+		0A36394E26BE896000756274 /* OrderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36394C26BE896000756274 /* OrderViewCell.swift */; };
+		0A36394F26BE896000756274 /* OrderViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A36394D26BE896000756274 /* OrderViewCell.xib */; };
+		0A36395126BE8F8100756274 /* UIAlertController_Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A36395026BE8F8000756274 /* UIAlertController_Ext.swift */; };
 		0A6FE8F226BC2B0000B51D48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6FE8F126BC2B0000B51D48 /* AppDelegate.swift */; };
 		0A6FE8F426BC2B0000B51D48 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6FE8F326BC2B0000B51D48 /* SceneDelegate.swift */; };
 		0A6FE8F926BC2B0000B51D48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6FE8F726BC2B0000B51D48 /* Main.storyboard */; };
@@ -49,6 +52,9 @@
 		0A36394526BE463F00756274 /* ItemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsViewController.swift; sourceTree = "<group>"; };
 		0A36394826BE729800756274 /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		0A36394A26BE76E700756274 /* HomePrsenter+ViewOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomePrsenter+ViewOrders.swift"; sourceTree = "<group>"; };
+		0A36394C26BE896000756274 /* OrderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewCell.swift; sourceTree = "<group>"; };
+		0A36394D26BE896000756274 /* OrderViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderViewCell.xib; sourceTree = "<group>"; };
+		0A36395026BE8F8000756274 /* UIAlertController_Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertController_Ext.swift; sourceTree = "<group>"; };
 		0A6FE8EE26BC2B0000B51D48 /* FoodMenia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodMenia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A6FE8F126BC2B0000B51D48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A6FE8F326BC2B0000B51D48 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -290,6 +296,8 @@
 				0A9E7A5126BCF7BB00A80D16 /* DaySaleCell.xib */,
 				0A9E7A6226BD281600A80D16 /* FoodItemCell.swift */,
 				0A9E7A6326BD281600A80D16 /* FoodItemCell.xib */,
+				0A36394C26BE896000756274 /* OrderViewCell.swift */,
+				0A36394D26BE896000756274 /* OrderViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -300,6 +308,7 @@
 				0A9E7A6726BD421600A80D16 /* UIView+Ext.swift */,
 				0A9E7A6926BD6AC000A80D16 /* BehaviourRelay+ext.swift */,
 				0A36394826BE729800756274 /* Array+Ext.swift */,
+				0A36395026BE8F8000756274 /* UIAlertController_Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -398,6 +407,7 @@
 				0A9E7A6526BD281600A80D16 /* FoodItemCell.xib in Resources */,
 				0A9E7A6126BD070500A80D16 /* DaySales.json in Resources */,
 				0A9E7A6F26BD7C1600A80D16 /* FoodHeaderView.xib in Resources */,
+				0A36394F26BE896000756274 /* OrderViewCell.xib in Resources */,
 				0A9E7A5D26BD06BF00A80D16 /* Drinks.json in Resources */,
 				0A6FE8F926BC2B0000B51D48 /* Main.storyboard in Resources */,
 			);
@@ -462,6 +472,7 @@
 				0A9E7A3C26BCD85700A80D16 /* HomeRouter.swift in Sources */,
 				0A9E7A6426BD281600A80D16 /* FoodItemCell.swift in Sources */,
 				0A9E7A4E26BCF20500A80D16 /* ViewController.swift in Sources */,
+				0A36395126BE8F8100756274 /* UIAlertController_Ext.swift in Sources */,
 				0A6FE8F426BC2B0000B51D48 /* SceneDelegate.swift in Sources */,
 				0A36394926BE729800756274 /* Array+Ext.swift in Sources */,
 				0A9E7A3A26BCD84B00A80D16 /* HomePresenter.swift in Sources */,
@@ -473,6 +484,7 @@
 				0A9E7A6826BD421600A80D16 /* UIView+Ext.swift in Sources */,
 				0A36394626BE463F00756274 /* ItemsViewController.swift in Sources */,
 				0A9E7A5226BCF7BB00A80D16 /* DaySaleCell.swift in Sources */,
+				0A36394E26BE896000756274 /* OrderViewCell.swift in Sources */,
 				0A9E7A4526BCDE6600A80D16 /* FoodItem.swift in Sources */,
 				0A9E7A4826BCE9CB00A80D16 /* Utils.swift in Sources */,
 				0A9E7A6E26BD7C1600A80D16 /* FoodHeaderView.swift in Sources */,

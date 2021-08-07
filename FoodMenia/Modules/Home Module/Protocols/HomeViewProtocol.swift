@@ -8,17 +8,19 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 /// initial `App` entry point
 typealias EntryPoint = HomeViewProtocol & UIViewController
+/// `converable` for section model
+/// this will helps to define section in data source
+typealias Section = AnimatableSectionModel<String, FoodItem>
 
 
 protocol Reusable {
     /// The reuse identifier to use when registering and later dequeuing a reusable cell.
     static var reuseIdentifier: String { get }
     
-    /// Performs any clean up necessary to prepare the view for use again.
-    func reset()
 }
 
 extension Reusable {
@@ -75,6 +77,12 @@ protocol HomeViewProtocol: AnyObject {
     /// - message: specific `message` for the `error`
     func showError(_ error: WebError)
     
+    /// on order list vc user can remove the selected items
+    /// - Parameters:
+    ///   - foodItem: specific item which need to remove from the list
+    ///   - vc: this is the `ItemsViewController` where use can reomve the order
+    ///    /// this will helps to remove item from the `selectedItems`
+    func didRemoveITem( foodItem: FoodItem, vc: ItemsViewController)
     
 }
 
@@ -124,6 +132,13 @@ protocol HomePresenterProtocol: AnyObject {
     
     /// when `HomeView` stored in memory this will helps to tell the `interactor` to start fetching data 
     func startFetchingData()
+    
+    /// on order list vc user can remove the selected items
+    /// - Parameters:
+    ///   - foodItem: specific item which need to remove from the list
+    ///   - vc: this is the `ItemsViewController` where use can reomve the order
+    ///    /// this will helps to remove item from the `selectedItems`
+    func didRemoveITem( foodItem: FoodItem, vc: ItemsViewController)
 }
 
 
