@@ -1,4 +1,3 @@
 # FoodMenia
-Food delivery available.
-# DinnDinAssignment
+This is simple demo app using Viper architecture and RXSwift.
 # DinnDinAssignment
