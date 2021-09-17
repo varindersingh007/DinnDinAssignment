@@ -7,19 +7,57 @@
 
 import Foundation
 import Moya
+import ObjectMapper
 
-class EndPointType: TargetType {
-    var baseURL: URL
+enum FoodEndPointType: String {
+    case daySales = "DaySales"
+    case foodDrinks = "FoodDrinks"
+    case pizza = "Pizza"
+    case sushi = "Sushi"
+    case drinks = "Drinks"
     
-    var path: String = ""
+}
+
+extension FoodEndPointType: TargetType {
+    var method: Moya.Method {
+        .post
+    }
     
-    var method: Method
+    var baseURL: URL {
+        return URL(fileURLWithPath: self.path)
+    }
     
-    var sampleData: Data
+    var path: String {
+        Bundle.main.path(forResource: self.rawValue, ofType: "json")!
+    }
     
-    var task: Task
+    var sampleData: Data {
+        try! Data(contentsOf: self.baseURL, options: .mappedIfSafe)
+    }
     
-    var headers: [String : String]?
+    var task: Task {
+        .requestJSONEncodable(sampleData)
+    }
     
+    var headers: [String : String]? { [:] }
+}
+
+
+class WebService {
+    static let shared = WebService()
     
+    func fetchData<T:Mappable>(endPointType: FoodEndPointType,completion: @escaping((Result<T,WebError>)->Void)) {
+        let data = endPointType.sampleData
+        do {
+            guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] else { return }
+            if let value = T(JSON: json) {
+                completion(.success(value))
+            } else {
+                completion(.failure(WebError.failed("Data not found.")))
+            }
+        } catch {
+            print("Unable to Initialize Weather Data")
+            completion(.failure(WebError.failed("Data not found.")))
+        }
+    }
 }

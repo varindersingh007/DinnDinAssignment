@@ -1,0 +1,131 @@
+
+{
+    "foodDrinks" : [
+        {
+            "name":"Pizza",
+            "data":
+            [
+                {
+                    "itemName":"Deluxe",
+                    "itemDetail":"Chicken item, pepperoni",
+                    "itemPrice": 45,
+                    "itemImage":"pizza0",
+                    "isVeg" : false,
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Hawalian",
+                    "itemDetail":"Non Chicken item, pepperoni",
+                    "itemPrice": 55,
+                    "itemImage":"pizza1",
+                    "isVeg" : true,
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Pepperoni",
+                    "itemDetail":"Non Chicken item, pepperoni",
+                    "itemPrice": 35,
+                    "itemImage":"pizza2",
+                    "isVeg" : true,
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Deluxe",
+                    "itemDetail":"Chicken item, pepperoni",
+                    "itemPrice": 50,
+                    "itemImage":"pizza3",
+                    "isVeg" : false,
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Hawalian",
+                    "itemDetail":"Non Chicken item, pepperoni",
+                    "itemPrice": 40,
+                    "itemImage":"pizza4",
+                    "isVeg" : false,
+                    "itemWeight" : "150 weight, 4 piece"
+                }
+            ]
+        },{
+            "name":"Sushi",
+            "data":
+            [
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 55,
+                    "itemImage":"sushi0",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 45,
+                    "itemImage":"sushi1",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 40,
+                    "itemImage":"sushi2",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 35,
+                    "itemImage":"sushi3",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"sushi",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 50,
+                    "itemImage":"sushi4",
+                    "itemWeight" : "150 weight, 4 piece"
+                }
+            ]
+        },{
+            "name":"Drinks",
+            "data":
+            [
+                {
+                    "itemName":"Lemindo",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 55,
+                    "itemImage":"drinks0",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Red wine",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 36,
+                    "itemImage":"drinks1",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Fresh Bear",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 60,
+                    "itemImage":"drinks2",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Orange Juice",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 56,
+                    "itemImage":"drinks3",
+                    "itemWeight" : "150 weight, 4 piece"
+                },
+                {
+                    "itemName":"Bear",
+                    "itemDetail":"Testing text",
+                    "itemPrice": 76,
+                    "itemImage":"drinks4",
+                    "itemWeight" : "150 weight, 4 piece"
+                }
+            ]
+        }
+    ]
+}
