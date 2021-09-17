@@ -47,7 +47,7 @@ class FoodItemCell: UICollectionViewCell, Reusable {
 
     
     /// configure the cell
-    /// - Parameter foodItem: this is the `foodItem` model which 
+    /// - Parameter foodItem: this is the `foodItem` model which
     func configureCell(_ foodItem: FoodItem) {
         if let imageName = foodItem.itemImage {
             itemThumView.image = UIImage(named: imageName)
